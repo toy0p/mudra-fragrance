@@ -1,0 +1,20 @@
+{% extends "website/base.html" %}
+{% block title %}Order {{ order.number }} | MUDRA Fragrance{% endblock %}
+{% block content %}
+<main class="simple-page">
+    <h1>Order {{ order.number }}</h1>
+    <section class="simple-card">
+        <p>{{ order.created_at|date:"M j, Y" }} · {{ order.get_status_display }} · Payment {{ order.get_payment_status_display }}</p>
+        <h2>Delivery information</h2>
+        <p>{{ order.customer_name }}<br>{{ order.email }}<br>{{ order.phone }}<br>{{ order.delivery_address|linebreaksbr }}</p>
+    </section>
+    <section class="simple-card">
+        <h2>Items</h2>
+        {% for item in order.items.all %}
+            <p>{{ item.product.name }} × {{ item.quantity }} · &#8377;{{ item.product_price }} each</p>
+        {% endfor %}
+        <p><strong>Total: &#8377;{{ order.total }}</strong></p>
+    </section>
+</main>
+<style>.simple-page{max-width:850px;margin:auto;padding:55px 24px 90px}.simple-page>h1{font:400 40px Georgia,serif;overflow-wrap:anywhere}.simple-card{background:#f5f5f3;padding:26px;margin:18px 0}.simple-card h2{font:400 26px Georgia,serif;margin:14px 0}.simple-card p{margin:10px 0;overflow-wrap:anywhere}@media(max-width:600px){.simple-page{padding:35px 16px 65px}.simple-page>h1{font-size:32px}}</style>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "website/base.html" %}
+{% block title %}Account | MUDRA Fragrance{% endblock %}
+{% block content %}
+<main class="simple-page">
+    <h1>Your Account</h1>
+    <section class="simple-card">
+        <h2>Profile</h2>
+        <p><strong>Username:</strong> {{ user.username }}</p>
+        <p><strong>Name:</strong> {{ user.get_full_name|default:"Not provided" }}</p>
+        <p><strong>Email:</strong> {{ user.email|default:"Not provided" }}</p>
+    </section>
+    <section class="simple-card">
+        <h2>Order history</h2>
+        {% for order in orders %}
+            <p><a href="{% url 'order_detail' order.number %}">{{ order.number }}</a> · {{ order.created_at|date:"M j, Y" }} · {{ order.get_status_display }} · &#8377;{{ order.total }}</p>
+        {% empty %}
+            <p>Your orders will appear here.</p>
+        {% endfor %}
+    </section>
+    <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="simple-button" type="submit">LOG OUT</button></form>
+</main>
+<style>
+.simple-page{max-width:850px;margin:0 auto;padding:55px 24px 90px}.simple-page>h1{font:400 48px Georgia,serif;margin-bottom:28px}.simple-card{background:#f5f5f3;padding:26px;margin:18px 0}.simple-card h2{font:400 27px Georgia,serif;margin-bottom:16px}.simple-card p{margin:10px 0;overflow-wrap:anywhere}.simple-card a{text-decoration:underline}.simple-button,.simple-page button[type=submit]{border:0;background:#111;color:#fff;padding:14px 24px;cursor:pointer;letter-spacing:.1em}
+@media(max-width:600px){.simple-page{padding:35px 16px 65px}.simple-page>h1{font-size:38px}}
+</style>
+{% endblock %}

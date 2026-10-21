@@ -1,0 +1,830 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}MUDRA Fragrance{% endblock %}</title>
+
+    <style>
+
+        :root {
+            --black: #111111;
+            --white: #ffffff;
+            --text: #171717;
+            --muted: #555555;
+            --border: #e6e6e6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--white);
+            color: var(--text);
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* =========================
+           TOP BLACK TICKER
+        ========================= */
+
+        .top-ticker {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1.27cm;
+            z-index: 1000;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            background: #000000;
+            color: #ffffff;
+        }
+
+        .ticker-track {
+            display: flex;
+            width: max-content;
+            white-space: nowrap;
+            animation: tickerMove 22s linear infinite;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+        }
+
+        .ticker-track span {
+            display: block;
+            padding-right: 70px;
+        }
+
+        @keyframes tickerMove {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* =========================
+           MAIN WHITE HEADER
+        ========================= */
+
+        .site-header {
+            position: fixed;
+            top: 1.27cm;
+            left: 0;
+            width: 100%;
+            height: 64px;
+            z-index: 900;
+            background: #ffffff;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .main-nav {
+            width: 100%;
+            height: 100%;
+            padding: 0 34px;
+            display: grid;
+            grid-template-columns: 150px 1fr 150px;
+            align-items: center;
+        }
+
+        /* =========================
+           MUDRA LOGO
+        ========================= */
+
+        .mudra-logo {
+            justify-self: start;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 25px;
+            font-weight: 500;
+            letter-spacing: 0.13em;
+            line-height: 1;
+        }
+
+        /* =========================
+           CENTER NAVIGATION
+        ========================= */
+
+        .main-menu {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 38px;
+        }
+
+        .main-menu a {
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            white-space: nowrap;
+            transition: opacity 0.2s ease;
+        }
+
+        .main-menu a:hover {
+            opacity: 0.45;
+        }
+
+        /* =========================
+           HEADER ICONS
+        ========================= */
+
+        .header-actions {
+            justify-self: end;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .header-icon {
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* Search */
+
+        .search-icon {
+            width: 19px;
+            height: 19px;
+            border: 1.8px solid #111111;
+            border-radius: 50%;
+            display: block;
+            position: relative;
+        }
+
+        .search-icon::after {
+            content: "";
+            position: absolute;
+            width: 8px;
+            height: 1.8px;
+            background: #111111;
+            right: -6px;
+            bottom: -3px;
+            transform: rotate(45deg);
+            transform-origin: left center;
+        }
+
+        /* Account */
+
+        .account-icon {
+            width: 22px;
+            height: 23px;
+            display: block;
+            position: relative;
+        }
+
+        .account-head {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border: 1.7px solid #111111;
+            border-radius: 50%;
+            top: 0;
+            left: 7px;
+        }
+
+        .account-body {
+            position: absolute;
+            width: 19px;
+            height: 10px;
+            border: 1.7px solid #111111;
+            border-bottom: 0;
+            border-radius: 12px 12px 0 0;
+            bottom: 0;
+            left: 1px;
+        }
+
+        /* Bag */
+
+        .bag-icon {
+            width: 20px;
+            height: 19px;
+            border: 1.7px solid #111111;
+            display: block;
+            position: relative;
+        }
+
+        .bag-handle {
+            position: absolute;
+            width: 9px;
+            height: 6px;
+            border: 1.7px solid #111111;
+            border-bottom: 0;
+            border-radius: 8px 8px 0 0;
+            top: -7px;
+            left: 4px;
+        }
+
+        .bag-count {
+            position: absolute;
+            top: -10px;
+            right: -9px;
+            min-width: 17px;
+            height: 17px;
+            padding: 0 4px;
+            border-radius: 50%;
+            background: #111111;
+            color: #ffffff;
+            font-size: 9px;
+            line-height: 17px;
+            text-align: center;
+        }
+
+        /* =========================
+           PAGE POSITION
+        ========================= */
+
+        .page {
+            min-height: 100vh;
+            padding-top: calc(1.27cm + 64px);
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .site-footer {
+            padding: 70px 40px;
+            border-top: 1px solid #e5e5e5;
+            background: #ffffff;
+        }
+
+        .footer-inner {
+            max-width: 1400px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            gap: 40px;
+        }
+
+        .footer-brand {
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 28px;
+            letter-spacing: 0.18em;
+        }
+
+        .footer-note {
+            color: #777777;
+            font-size: 13px;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: center;
+            font-size: 12px;
+        }
+
+        .cart-feedback {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            z-index: 1200;
+            max-width: min(360px, calc(100vw - 40px));
+            padding: 12px 16px;
+            background: #111;
+            color: #fff;
+            font-size: 13px;
+        }
+
+        .cart-drawer-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 1400;
+            background: rgba(0, 0, 0, .38);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .25s ease, visibility .25s ease;
+        }
+
+        .cart-drawer-backdrop.is-open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .cart-drawer {
+            position: fixed;
+            inset: 0 0 0 auto;
+            z-index: 1401;
+            display: flex;
+            flex-direction: column;
+            width: min(480px, 100vw);
+            height: 100dvh;
+            background: #f5f5f3;
+            box-shadow: -12px 0 40px rgba(0, 0, 0, .12);
+            transform: translateX(102%);
+            transition: transform .25s ease;
+        }
+
+        .cart-drawer.is-open {
+            transform: translateX(0);
+        }
+
+        .cart-drawer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 23px 26px;
+            border-bottom: 1px solid #ddd;
+            background: #fff;
+        }
+
+        .cart-drawer-header h2 {
+            font: 400 28px Georgia, serif;
+        }
+
+        .cart-drawer-close {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #ddd;
+            background: #fff;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .cart-drawer-content {
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            padding: 18px;
+        }
+
+        .cart-drawer-item {
+            display: grid;
+            grid-template-columns: 105px 1fr;
+            gap: 16px;
+            padding: 14px;
+            margin-bottom: 12px;
+            background: #fff;
+        }
+
+        .cart-drawer-image {
+            height: 125px;
+            display: grid;
+            place-items: center;
+            overflow: hidden;
+            background: #eee;
+            color: #999;
+            font-size: 10px;
+            letter-spacing: .15em;
+        }
+
+        .cart-drawer-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .cart-drawer-item h3 {
+            margin: 7px 0;
+            font: 400 19px Georgia, serif;
+        }
+
+        .cart-drawer-item small {
+            color: #777;
+            font-size: 9px;
+            letter-spacing: .12em;
+        }
+
+        .cart-drawer-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 10px 0;
+        }
+
+        .cart-drawer-controls button {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #ccc;
+            background: #fff;
+            cursor: pointer;
+        }
+
+        .cart-drawer-remove {
+            padding: 0;
+            border: 0;
+            background: none;
+            font-size: 9px;
+            letter-spacing: .12em;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .cart-drawer-footer {
+            padding: 20px 26px 25px;
+            border-top: 1px solid #ddd;
+            background: #fff;
+        }
+
+        .cart-drawer-total {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 14px;
+            font-size: 17px;
+        }
+
+        .cart-drawer-checkout,
+        .cart-drawer-empty a {
+            display: block;
+            padding: 15px;
+            background: #111;
+            color: #fff;
+            text-align: center;
+            font-size: 10px;
+            letter-spacing: .15em;
+        }
+
+        .cart-drawer-empty {
+            padding: 55px 22px;
+            background: #fff;
+            text-align: center;
+        }
+
+        .cart-drawer-empty h3 {
+            font: 400 26px Georgia, serif;
+        }
+
+        .cart-drawer-empty p {
+            margin: 12px 0 24px;
+            color: #666;
+        }
+
+        body.cart-drawer-open {
+            overflow: hidden;
+        }
+
+        .site-messages {
+            position: relative;
+            z-index: 2;
+            padding: 12px 5vw;
+            background: #f5f5f3;
+            text-align: center;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 900px) {
+
+            .main-nav {
+                padding: 0 20px;
+                display: flex;
+                justify-content: space-between;
+            }
+
+            .main-menu {
+                display: none;
+            }
+
+            .mudra-logo {
+                font-size: 23px;
+            }
+
+            .header-actions {
+                gap: 16px;
+            }
+
+            .site-header {
+                height: 72px;
+            }
+
+            .page {
+                padding-top: calc(1.27cm + 72px);
+            }
+
+            .site-footer {
+                padding: 40px 20px;
+            }
+
+            .footer-inner {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+
+    </style>
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+
+    <!-- TOP ANNOUNCEMENT BAR -->
+    <div class="top-ticker">
+        <div class="ticker-track">
+            <span>MUDRA FRAGRANCE&nbsp;&nbsp;&nbsp; &middot; &nbsp;&nbsp;&nbsp;</span>
+            <span>MUDRA FRAGRANCE&nbsp;&nbsp;&nbsp; &middot; &nbsp;&nbsp;&nbsp;</span>
+            <span>MUDRA FRAGRANCE&nbsp;&nbsp;&nbsp; &middot; &nbsp;&nbsp;&nbsp;</span>
+            <span>MUDRA FRAGRANCE&nbsp;&nbsp;&nbsp; &middot; &nbsp;&nbsp;&nbsp;</span>
+        </div>
+    </div>
+
+    <!-- MAIN DESKTOP HEADER -->
+    <header class="site-header">
+        <nav class="main-nav">
+
+            <!-- LOGO -->
+            <a href="{% url 'home' %}" class="mudra-logo">
+                MUDRA
+            </a>
+
+            <!-- NAVIGATION -->
+            <div class="main-menu">
+                <a href="{% url 'shop' %}">Products</a>
+                <a href="{% url 'information' 'faq' %}">FAQ</a>
+                <a href="{% url 'information' 'contact' %}">Contact</a>
+            </div>
+
+            <!-- ACTIONS -->
+            <div class="header-actions">
+
+                <a href="{% url 'shop' %}" class="header-icon" aria-label="Search products">
+                    <span class="search-icon"></span>
+                </a>
+
+                <a href="{% url 'account' %}" class="header-icon" aria-label="Account">
+                    <span class="account-icon">
+                        <span class="account-head"></span>
+                        <span class="account-body"></span>
+                    </span>
+                </a>
+
+                <a href="{% url 'cart' %}" class="header-icon bag-wrapper" aria-label="Shopping bag" data-cart-opener>
+                    <span class="bag-icon">
+                        <span class="bag-handle"></span>
+                    </span>
+                    <span class="bag-count" aria-live="polite">{{ bag_count }}</span>
+                </a>
+
+            </div>
+
+        </nav>
+    </header>
+
+<main class="page">
+        {% if messages %}
+            <div class="site-messages" role="status">
+                {% for message in messages %}<p>{{ message }}</p>{% endfor %}
+            </div>
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-brand">MUDRA</div>
+            <div class="footer-links">
+                <a href="{% url 'information' 'privacy' %}">Privacy Policy</a>
+                <a href="{% url 'information' 'terms' %}">Terms &amp; Conditions</a>
+                <a href="{% url 'information' 'shipping' %}">Shipping</a>
+                <a href="{% url 'information' 'returns' %}">Returns / Refunds</a>
+                <a href="{% url 'information' 'contact' %}">Contact</a>
+                <a href="{% url 'information' 'faq' %}">FAQ</a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'account' %}">Account</a>
+                    <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit">Log out</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}">Log in</a>
+                    <a href="{% url 'signup' %}">Sign up</a>
+                {% endif %}
+            </div>
+        </div>
+    </footer>
+    <div class="cart-drawer-backdrop" data-cart-backdrop></div>
+    <aside class="cart-drawer" data-cart-drawer data-content-url="{% url 'cart_drawer' %}" role="dialog" aria-modal="true" aria-labelledby="cart-drawer-title" aria-hidden="true">
+        <header class="cart-drawer-header">
+            <h2 id="cart-drawer-title">Your Bag</h2>
+            <button class="cart-drawer-close" type="button" data-cart-close aria-label="Close bag">&times;</button>
+        </header>
+        <div class="cart-drawer-content" data-cart-drawer-content aria-live="polite"></div>
+    </aside>
+    <div id="cart-feedback" class="cart-feedback" role="status" hidden></div>
+    <script>
+        const cartUpdateTimers = new WeakMap();
+        const cartUpdateVersions = new WeakMap();
+
+        function renderCartState(scope) {
+            let count = 0;
+            let totalCents = 0;
+            scope.querySelectorAll("[data-cart-item]").forEach(function (item) {
+                const quantity = Number(item.querySelector("[data-item-quantity]").textContent) || 0;
+                const unitPrice = Number(item.dataset.unitPrice) || 0;
+                count += quantity;
+                totalCents += Math.round(unitPrice * 100) * quantity;
+                item.hidden = quantity === 0;
+                item.querySelector("[data-line-total]").textContent =
+                    "₹" + (Math.round(unitPrice * 100) * quantity / 100).toFixed(2);
+            });
+            document.querySelectorAll(".bag-count").forEach(function (element) {
+                element.textContent = count;
+            });
+            document.querySelectorAll("[data-cart-total]").forEach(function (element) {
+                element.textContent = "₹" + (totalCents / 100).toFixed(2);
+            });
+            const layout = scope.querySelector("[data-cart-layout]");
+            const empty = scope.querySelector("[data-cart-empty]");
+            if (layout) layout.hidden = count === 0;
+            if (empty) empty.hidden = count !== 0;
+        }
+
+        const cartDrawer = document.querySelector("[data-cart-drawer]");
+        const cartBackdrop = document.querySelector("[data-cart-backdrop]");
+        const cartDrawerContent = document.querySelector("[data-cart-drawer-content]");
+        let lastCartOpener = null;
+
+        async function openCartDrawer(opener) {
+            if (!cartDrawer || !cartDrawerContent) return;
+            lastCartOpener = opener || document.activeElement;
+            cartDrawerContent.textContent = "Loading your bag…";
+            cartDrawer.classList.add("is-open");
+            cartBackdrop.classList.add("is-open");
+            cartDrawer.setAttribute("aria-hidden", "false");
+            document.body.classList.add("cart-drawer-open");
+            cartDrawer.querySelector("[data-cart-close]").focus();
+            try {
+                const response = await fetch(cartDrawer.dataset.contentUrl, {
+                    headers: {"X-Requested-With": "XMLHttpRequest"}
+                });
+                if (!response.ok) throw new Error("Your bag could not be loaded.");
+                cartDrawerContent.innerHTML = await response.text();
+            } catch (error) {
+                cartDrawerContent.textContent = error.message;
+            }
+        }
+
+        function closeCartDrawer() {
+            if (!cartDrawer) return;
+            cartDrawer.classList.remove("is-open");
+            cartBackdrop.classList.remove("is-open");
+            cartDrawer.setAttribute("aria-hidden", "true");
+            document.body.classList.remove("cart-drawer-open");
+            if (lastCartOpener && lastCartOpener.focus) lastCartOpener.focus();
+        }
+
+        document.addEventListener("click", function (event) {
+            const opener = event.target.closest("[data-cart-opener]");
+            if (opener) {
+                if (window.location.pathname === opener.getAttribute("href")) return;
+                event.preventDefault();
+                openCartDrawer(opener);
+                return;
+            }
+            if (event.target.closest("[data-cart-close]") || event.target === cartBackdrop) {
+                closeCartDrawer();
+            }
+        });
+
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape" && cartDrawer && cartDrawer.classList.contains("is-open")) {
+                closeCartDrawer();
+            }
+        });
+
+        async function saveCartQuantity(form, cartItem, quantity, version) {
+            const csrf = form.querySelector("[name=csrfmiddlewaretoken]");
+            const payload = new FormData(form);
+            payload.set("action", "set");
+            payload.set("quantity", String(quantity));
+            const response = await fetch(form.getAttribute("action"), {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": csrf ? csrf.value : "",
+                    "X-Requested-With": "XMLHttpRequest",
+                    "Accept": "application/json"
+                },
+                body: payload
+            });
+            const data = await response.json().catch(function () { return {}; });
+            if (!response.ok) throw new Error(data.error || "The cart could not be updated. Please try again.");
+            if (cartUpdateVersions.get(cartItem) === version) {
+                cartItem.querySelector("[data-item-quantity]").textContent = data.quantity;
+                renderCartState(cartItem.closest("[data-cart-scope]"));
+            }
+        }
+
+        document.addEventListener("submit", async function (event) {
+            const form = event.target.closest("form[data-cart-action]");
+            if (!form) return;
+            event.preventDefault();
+            const cartItem = form.closest("[data-cart-item]");
+            if (form.dataset.cartAction === "update" && cartItem) {
+                const quantityElement = cartItem.querySelector("[data-item-quantity]");
+                const delta = form.querySelector("[name=action]").value === "increase" ? 1 : -1;
+                const quantity = Math.max(0, (Number(quantityElement.textContent) || 0) + delta);
+                const version = (cartUpdateVersions.get(cartItem) || 0) + 1;
+                cartUpdateVersions.set(cartItem, version);
+                quantityElement.textContent = quantity;
+                renderCartState(cartItem.closest("[data-cart-scope]"));
+                const existingTimer = cartUpdateTimers.get(cartItem);
+                if (existingTimer) window.clearTimeout(existingTimer);
+                cartUpdateTimers.set(cartItem, window.setTimeout(function () {
+                    saveCartQuantity(form, cartItem, quantity, version).catch(function (error) {
+                        if (cartUpdateVersions.get(cartItem) === version) {
+                            quantityElement.textContent = Number(quantityElement.textContent) - delta;
+                            renderCartState();
+                        }
+                        const feedback = document.getElementById("cart-feedback");
+                        if (feedback) {
+                            feedback.textContent = error.message;
+                            feedback.hidden = false;
+                        }
+                    });
+                }, 120));
+                return;
+            }
+            const button = form.querySelector("button[type=submit]");
+            const feedback = document.getElementById("cart-feedback");
+            if (button) button.disabled = true;
+            try {
+                const csrf = form.querySelector("[name=csrfmiddlewaretoken]");
+                const payload = new FormData(form);
+                if (event.submitter && event.submitter.name) {
+                    payload.set(event.submitter.name, event.submitter.value);
+                }
+                const response = await fetch(form.getAttribute("action"), {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": csrf ? csrf.value : "",
+                        "X-Requested-With": "XMLHttpRequest",
+                        "Accept": "application/json"
+                    },
+                    body: payload
+                });
+                const data = await response.json().catch(function () { return {}; });
+                if (!response.ok) throw new Error(data.error || "The cart could not be updated. Please try again.");
+                if (data.redirect) {
+                    window.location.assign(data.redirect);
+                    return;
+                }
+                document.querySelectorAll(".bag-count").forEach(function (count) {
+                    count.textContent = data.count;
+                });
+                if (data.open_cart) {
+                    openCartDrawer(form);
+                    return;
+                }
+                if (form.dataset.cartAction === "add") {
+                    const addButton = form.querySelector("[name=add_to_bag]");
+                    if (addButton) {
+                        addButton.textContent = "ADDED";
+                        addButton.dataset.alreadyAdded = "true";
+                    }
+                }
+                const cartItem = form.closest("[data-cart-item]");
+                if (cartItem && data.quantity === 0) cartItem.remove();
+                else if (cartItem && data.quantity !== undefined) {
+                    cartItem.querySelector("[data-item-quantity]").textContent = data.quantity;
+                    cartItem.querySelector("[data-line-total]").textContent = "₹" + data.line_total;
+                }
+                if (cartItem) renderCartState(cartItem.closest("[data-cart-scope]"));
+                document.querySelectorAll("[data-cart-total]").forEach(function (total) {
+                    total.textContent = "₹" + data.total;
+                });
+                if (data.empty) {
+                    const scope = cartItem ? cartItem.closest("[data-cart-scope]") : null;
+                    const layout = scope && scope.querySelector("[data-cart-layout]");
+                    const empty = scope && scope.querySelector("[data-cart-empty]");
+                    if (layout) layout.hidden = true;
+                    if (empty) empty.hidden = false;
+                }
+                if (feedback) {
+                    feedback.textContent = form.dataset.cartAction === "add" ? "Added to bag." : "Bag updated.";
+                    feedback.hidden = false;
+                    window.setTimeout(function () { feedback.hidden = true; }, 2500);
+                }
+            } catch (error) {
+                if (feedback) {
+                    feedback.textContent = error.message;
+                    feedback.hidden = false;
+                }
+            } finally {
+                if (button) button.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

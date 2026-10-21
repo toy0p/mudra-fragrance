@@ -1,0 +1,58 @@
+<div data-cart-scope>
+    {% if items %}
+        <div class="cart-drawer-items" data-cart-layout>
+            {% for item in items %}
+            <article class="cart-drawer-item" data-cart-item="{{ item.id }}" data-unit-price="{{ item.product.price }}">
+                <div class="cart-drawer-image">
+                    {% if item.product.image %}
+                        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                    {% else %}
+                        <span>MUDRA</span>
+                    {% endif %}
+                </div>
+                <div>
+                    {% if item.product.category %}<small>{{ item.product.category.name|upper }}</small>{% endif %}
+                    <h3>{{ item.product.name }}</h3>
+                    <p>&#8377;{{ item.product.price }}</p>
+                    <div class="cart-drawer-controls">
+                        <form method="post" action="{% url 'update_cart_item' item.id %}" data-cart-action="update">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="decrease">
+                            <button type="submit" aria-label="Decrease {{ item.product.name }} quantity">−</button>
+                        </form>
+                        <span data-item-quantity>{{ item.quantity }}</span>
+                        <form method="post" action="{% url 'update_cart_item' item.id %}" data-cart-action="update">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="increase">
+                            <button type="submit" aria-label="Increase {{ item.product.name }} quantity">+</button>
+                        </form>
+                    </div>
+                    <p data-line-total>&#8377;{{ item.line_total }}</p>
+                    <form method="post" action="{% url 'remove_cart_item' item.id %}" data-cart-action="remove">
+                        {% csrf_token %}
+                        <button class="cart-drawer-remove" type="submit">REMOVE</button>
+                    </form>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        <div class="cart-drawer-empty" data-cart-empty hidden>
+            <h3>Your bag is empty.</h3>
+            <p>Add something from the collection to begin.</p>
+            <a href="{% url 'shop' %}">EXPLORE PRODUCTS</a>
+        </div>
+        <footer class="cart-drawer-footer">
+            <div class="cart-drawer-total">
+                <span>Subtotal</span>
+                <strong data-cart-total>&#8377;{{ total }}</strong>
+            </div>
+            <a class="cart-drawer-checkout" href="{% url 'checkout' %}">CHECKOUT</a>
+        </footer>
+    {% else %}
+        <div class="cart-drawer-empty">
+            <h3>Your bag is empty.</h3>
+            <p>Add something from the collection to begin.</p>
+            <a href="{% url 'shop' %}">EXPLORE PRODUCTS</a>
+        </div>
+    {% endif %}
+</div>

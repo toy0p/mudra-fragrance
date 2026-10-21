@@ -1,0 +1,23 @@
+{% extends "website/base.html" %}
+{% block title %}{{ title }} | MUDRA Fragrance{% endblock %}
+{% block content %}
+<main class="information-page">
+    <h1>{{ title }}</h1>
+    <section class="information-placeholder">
+        {% if page == "privacy" %}
+            <p>[EDITABLE PLACEHOLDER: Add the privacy practices, data collected, and contact details after business review.]</p>
+        {% elif page == "terms" %}
+            <p>[EDITABLE PLACEHOLDER: Add the applicable terms and conditions after business review.]</p>
+        {% elif page == "shipping" %}
+            <p>[EDITABLE PLACEHOLDER: Add confirmed shipping regions, charges, and delivery information.]</p>
+        {% elif page == "returns" %}
+            <p>[EDITABLE PLACEHOLDER: Add the confirmed returns and refund process and eligibility.]</p>
+        {% elif page == "contact" %}
+            <p>[EDITABLE PLACEHOLDER: Add the business contact email, phone, and address.]</p>
+        {% else %}
+            <p>[EDITABLE PLACEHOLDER: Add answers to confirmed frequently asked questions.]</p>
+        {% endif %}
+    </section>
+</main>
+<style>.information-page{max-width:900px;margin:auto;padding:55px 24px 90px}.information-page h1{font:400 48px Georgia,serif;margin-bottom:28px}.information-placeholder{background:#f5f5f3;padding:30px;line-height:1.7;color:#555}@media(max-width:600px){.information-page{padding:35px 16px 65px}.information-page h1{font-size:38px}}</style>
+{% endblock %}

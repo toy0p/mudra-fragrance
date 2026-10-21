@@ -1,0 +1,111 @@
+{% extends "website/base.html" %}
+
+{% block title %}Your Bag | MUDRA Fragrance{% endblock %}
+
+{% block content %}
+<section class="cart-page" data-cart-scope>
+    <header class="cart-header">
+        <p>MUDRA FRAGRANCE</p>
+        <h1>Your Bag</h1>
+    </header>
+
+    <div class="cart-layout" data-cart-layout {% if not items %}hidden{% endif %}>
+        <div class="cart-items">
+            {% for item in items %}
+            <article class="cart-item" data-cart-item="{{ item.id }}" data-unit-price="{{ item.product.price }}">
+                <div class="cart-image">
+                    {% if item.product.image %}
+                        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                    {% else %}
+                        <span>MUDRA</span>
+                    {% endif %}
+                </div>
+                <div class="cart-info">
+                    {% if item.product.category %}<small>{{ item.product.category.name }}</small>{% endif %}
+                    <h2>{{ item.product.name }}</h2>
+                    <p>&#8377;{{ item.product.price }}</p>
+                    <div class="cart-controls">
+                        <form method="post" action="{% url 'update_cart_item' item.id %}" data-cart-action="update">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="decrease">
+                            <button type="submit" aria-label="Decrease {{ item.product.name }} quantity">−</button>
+                        </form>
+                        <span data-item-quantity>{{ item.quantity }}</span>
+                        <form method="post" action="{% url 'update_cart_item' item.id %}" data-cart-action="update">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="increase">
+                            <button type="submit" aria-label="Increase {{ item.product.name }} quantity">+</button>
+                        </form>
+                    </div>
+                    <p class="cart-line-total" data-line-total>&#8377;{{ item.line_total }}</p>
+                    <form method="post" action="{% url 'remove_cart_item' item.id %}" data-cart-action="remove">
+                        {% csrf_token %}
+                        <button class="remove-item" type="submit">REMOVE</button>
+                    </form>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+
+        <aside class="cart-summary">
+            <h2>Summary</h2>
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <span data-cart-total>&#8377;{{ total }}</span>
+            </div>
+            <div class="summary-row">
+                <span>Delivery</span>
+                <span>Confirmed during order processing</span>
+            </div>
+            <div class="summary-total">
+                <span>Total</span>
+                <strong data-cart-total>&#8377;{{ total }}</strong>
+            </div>
+            <a href="{% url 'shop' %}" class="continue-shopping">CONTINUE SHOPPING</a>
+            <a href="{% url 'checkout' %}" class="checkout-button">CHECKOUT</a>
+        </aside>
+    </div>
+
+    <div class="empty-cart" data-cart-empty {% if items %}hidden{% endif %}>
+        <h2>Your bag is empty.</h2>
+        <p>Add something from the MUDRA collection to begin.</p>
+        <a href="{% url 'shop' %}">EXPLORE PRODUCTS</a>
+    </div>
+</section>
+
+<style>
+.cart-page { background:#f5f5f3; min-height:80vh; padding:120px 5vw 100px; }
+.cart-header { text-align:center; margin-bottom:60px; }
+.cart-header p { font-size:10px; letter-spacing:.3em; color:#777; }
+.cart-header h1 { font-family:Georgia,serif; font-size:60px; font-weight:400; }
+.cart-layout { max-width:1400px; margin:auto; display:grid; grid-template-columns:2fr 1fr; gap:50px; }
+.cart-item { background:#fff; display:grid; grid-template-columns:220px 1fr; gap:25px; padding:20px; margin-bottom:20px; }
+.cart-image { height:240px; background:#eeeeec; display:flex; align-items:center; justify-content:center; color:#999; letter-spacing:.15em; }
+.cart-image img { width:100%; height:100%; object-fit:contain; }
+.cart-info { padding:15px 0; }
+.cart-info small { font-size:9px; letter-spacing:.2em; color:#888; }
+.cart-info h2 { font-family:Georgia,serif; font-size:27px; font-weight:400; margin:10px 0; }
+.cart-controls { display:flex; align-items:center; gap:20px; margin:18px 0; }
+.cart-controls button { width:36px; height:36px; border:1px solid #ccc; background:white; cursor:pointer; }
+.remove-item { border:0; background:none; padding:0; font-size:9px; letter-spacing:.15em; text-decoration:underline; cursor:pointer; }
+.cart-summary { background:#fff; padding:35px; height:max-content; position:sticky; top:100px; }
+.cart-summary h2 { font-family:Georgia,serif; font-size:30px; font-weight:400; margin-bottom:30px; }
+.summary-row,.summary-total { display:flex; justify-content:space-between; gap:12px; padding:15px 0; border-bottom:1px solid #eee; font-size:13px; }
+.summary-total { font-size:18px; border-bottom:0; margin-bottom:25px; }
+.continue-shopping,.checkout-button { display:block; text-align:center; padding:15px; margin-top:12px; text-decoration:none; font-size:10px; letter-spacing:.15em; }
+.continue-shopping { border:1px solid #111; color:#111; }
+.checkout-button { background:#111; color:#fff; }
+.empty-cart { max-width:700px; margin:auto; background:#fff; text-align:center; padding:80px 30px; }
+.empty-cart h2 { font-family:Georgia,serif; font-size:38px; font-weight:400; }
+.empty-cart p { color:#777; margin:15px 0 30px; }
+.empty-cart a { display:inline-block; background:#111; color:#fff; padding:15px 25px; font-size:10px; letter-spacing:.15em; }
+@media(max-width:800px) {
+    .cart-layout { grid-template-columns:1fr; gap:20px; }
+    .cart-item { grid-template-columns:minmax(95px,120px) 1fr; gap:15px; padding:14px; }
+    .cart-image { height:160px; }
+    .cart-summary { position:static; padding:24px; }
+    .cart-header h1 { font-size:46px; }
+    .cart-page { padding:105px 4vw 65px; }
+}
+</style>
+{% endblock %}

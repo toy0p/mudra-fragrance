@@ -1,0 +1,35 @@
+{% extends "website/base.html" %}
+{% block title %}Checkout | MUDRA Fragrance{% endblock %}
+{% block content %}
+<main class="checkout-page">
+    <h1>Checkout</h1>
+    <div class="checkout-layout">
+        <form method="post" class="checkout-card">
+            {% csrf_token %}
+            <h2>Customer information</h2>
+            {% if form.non_field_errors %}<div class="form-errors">{{ form.non_field_errors }}</div>{% endif %}
+            {% for field in form %}
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}<div class="form-errors">{{ field.errors }}</div>{% endif %}
+            {% endfor %}
+            <section class="payment-note">
+                <h2>Payment</h2>
+                <p>Payment integration is not connected. This order will be recorded with payment pending.</p>
+            </section>
+            <button type="submit">PLACE ORDER</button>
+        </form>
+        <aside class="checkout-card order-summary">
+            <h2>Order summary</h2>
+            {% for item in items %}
+                <p>{{ item.product.name }} × {{ item.quantity }} <span>&#8377;{{ item.line_total }}</span></p>
+            {% endfor %}
+            <strong>Total <span>&#8377;{{ total }}</span></strong>
+        </aside>
+    </div>
+</main>
+<style>
+.checkout-page{max-width:1200px;margin:auto;padding:50px 24px 90px}.checkout-page>h1{font:400 48px Georgia,serif;margin-bottom:30px}.checkout-layout{display:grid;grid-template-columns:1.5fr 1fr;gap:24px}.checkout-card{background:#f5f5f3;padding:28px}.checkout-card h2{font:400 28px Georgia,serif;margin-bottom:20px}.checkout-card label{display:block;margin:18px 0 7px}.checkout-card input,.checkout-card textarea{width:100%;padding:11px;border:1px solid #bbb;background:white;font:inherit}.checkout-card button{margin-top:24px;width:100%;padding:16px;border:0;background:#111;color:white;letter-spacing:.12em;cursor:pointer}.payment-note{margin-top:26px;padding:20px;background:white}.payment-note h2{font-size:22px;margin-bottom:9px}.payment-note p,.form-errors{color:#8a2222}.order-summary p,.order-summary strong{display:flex;justify-content:space-between;gap:15px;margin:14px 0}.order-summary strong{border-top:1px solid #ccc;padding-top:18px;font-size:18px}
+@media(max-width:760px){.checkout-page{padding:35px 16px 65px}.checkout-page>h1{font-size:38px}.checkout-layout{grid-template-columns:1fr}.checkout-card{padding:22px}}
+</style>
+{% endblock %}

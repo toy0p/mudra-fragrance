@@ -1,0 +1,116 @@
+{% extends "website/base.html" %}
+{% block title %}Create account | MUDRA Fragrance{% endblock %}
+{% block content %}
+<main class="simple-page">
+    <h1>Create account</h1>
+    <form method="post" class="simple-card auth-form" id="signup-form">
+        {% csrf_token %}
+        {% for field in form %}
+            {% if field.name != "password1" and field.name != "password2" %}
+                <p>
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}<span class="field-errors">{{ field.errors }}</span>{% endif %}
+                </p>
+            {% endif %}
+        {% endfor %}
+        <p>
+            {{ form.password1.label_tag }}
+            <span class="password-input-wrap">
+                {{ form.password1 }}
+                <button class="password-visibility" type="button" data-password-target="id_password1" aria-label="Show password" aria-pressed="false">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+            </span>
+            {% if form.password1.errors %}<span class="field-errors">{{ form.password1.errors }}</span>{% endif %}
+        </p>
+        <ul class="password-requirements" id="password-requirements" aria-live="polite">
+            <li data-requirement="length">At least 8 characters.</li>
+            <li data-requirement="common">Not a commonly used password.</li>
+            <li data-requirement="numeric">Not entirely numeric.</li>
+        </ul>
+        <p>
+            {{ form.password2.label_tag }}
+            <span class="password-input-wrap">
+                {{ form.password2 }}
+                <button class="password-visibility" type="button" data-password-target="id_password2" aria-label="Show password confirmation" aria-pressed="false">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+            </span>
+            {% if form.password2.errors %}<span class="field-errors">{{ form.password2.errors }}</span>{% endif %}
+        </p>
+        {% if form.non_field_errors %}<div class="field-errors">{{ form.non_field_errors }}</div>{% endif %}
+        <p class="requirement-status" id="requirement-status" aria-live="polite"></p>
+        <button class="simple-button" type="submit">CREATE ACCOUNT</button>
+    </form>
+    <p>Already registered? <a href="{% url 'login' %}">Log in</a>.</p>
+</main>
+<style>
+.simple-page{max-width:560px;margin:0 auto;padding:55px 24px 90px}.simple-page h1{font:400 48px Georgia,serif;margin-bottom:28px}.simple-card{background:#f5f5f3;padding:28px}.auth-form p{margin:0 0 18px}.auth-form label{display:block;margin-bottom:7px}.auth-form input{width:100%;min-height:42px;padding:9px;border:1px solid #bbb;background:#fff}.password-input-wrap{display:block;position:relative}.password-input-wrap input{padding-right:48px}.password-visibility{position:absolute;top:50%;right:5px;transform:translateY(-50%);display:grid;place-items:center;width:36px;height:36px;border:0;background:transparent;color:#555;cursor:pointer}.password-visibility svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}.password-visibility:focus-visible{outline:2px solid #111;outline-offset:1px}.password-requirements{margin:-7px 0 18px 20px;padding:0;color:#666;font-size:13px}.password-requirements li{margin:4px 0}.requirement-status,.field-errors{color:#8a2222;font-size:13px}.simple-button{border:0;background:#111;color:#fff;padding:14px 24px;cursor:pointer;letter-spacing:.1em}.simple-page p a{text-decoration:underline}
+@media(max-width:600px){.simple-page{padding:35px 16px 65px}.simple-page h1{font-size:38px}}
+</style>
+<script>
+(function () {
+    const form = document.getElementById("signup-form");
+    const passwordInput = document.getElementById("id_password1");
+    const requirements = document.getElementById("password-requirements");
+    const status = document.getElementById("requirement-status");
+    if (!form || !passwordInput || !requirements) return;
+    form.querySelectorAll("[data-password-target]").forEach(function (button) {
+        button.addEventListener("click", function () {
+            const input = document.getElementById(button.dataset.passwordTarget);
+            if (!input) return;
+            const showing = input.type === "password";
+            input.type = showing ? "text" : "password";
+            button.setAttribute("aria-pressed", String(showing));
+            button.setAttribute(
+                "aria-label",
+                (showing ? "Hide " : "Show ") +
+                    (input.id === "id_password1" ? "password" : "password confirmation")
+            );
+        });
+    });
+    let timer;
+    let requestVersion = 0;
+
+    passwordInput.addEventListener("input", function () {
+        window.clearTimeout(timer);
+        const version = ++requestVersion;
+        const password = passwordInput.value;
+        if (!password) {
+            requirements.querySelectorAll("li").forEach(function (item) {
+                item.hidden = false;
+            });
+            if (status) status.textContent = "";
+            return;
+        }
+        timer = window.setTimeout(async function () {
+            const payload = new FormData(form);
+            payload.set("password", password);
+            try {
+                const response = await fetch("{% url 'password_requirements' %}", {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": form.querySelector("[name=csrfmiddlewaretoken]").value,
+                        "X-Requested-With": "XMLHttpRequest",
+                        "Accept": "application/json"
+                    },
+                    body: payload
+                });
+                if (!response.ok) throw new Error("Unable to check password requirements.");
+                const result = await response.json();
+                if (version !== requestVersion) return;
+                requirements.querySelectorAll("li").forEach(function (item) {
+                    item.hidden = Boolean(result[item.dataset.requirement]);
+                });
+                if (status) status.textContent = "";
+            } catch (error) {
+                if (version === requestVersion && status) {
+                    status.textContent = "Requirements will still be checked when you submit.";
+                }
+            }
+        }, 200);
+    });
+})();
+</script>
+{% endblock %}

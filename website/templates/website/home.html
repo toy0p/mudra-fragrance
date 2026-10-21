@@ -1,0 +1,923 @@
+﻿{% extends "website/base.html" %}
+
+{% block title %}MUDRA — Fragrance{% endblock %}
+
+{% block extra_css %}
+
+<style>
+
+/* =========================================================
+   MUDRA — LUXURY HOMEPAGE
+   Visual redesign only.
+   Existing Django product/cart functionality preserved.
+   ========================================================= */
+
+.mudra-home {
+    background: #f4f2ed;
+    color: #171613;
+    overflow: hidden;
+}
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.mudra-hero {
+    min-height: calc(100vh - 1.27cm - 64px);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+        radial-gradient(
+            circle at 50% 42%,
+            #ffffff 0%,
+            #f5f3ee 42%,
+            #e8e4dc 100%
+        );
+    overflow: hidden;
+}
+
+/* subtle editorial background */
+
+.mudra-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,.35),
+            transparent 30%,
+            transparent 70%,
+            rgba(255,255,255,.35)
+        );
+    pointer-events: none;
+}
+
+/* =========================================================
+   HERO TYPOGRAPHY
+   ========================================================= */
+
+.mudra-hero-copy {
+    position: absolute;
+    z-index: 20;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: min(900px, 90vw);
+    text-align: center;
+    pointer-events: none;
+}
+
+.mudra-kicker {
+    margin-bottom: 22px;
+    font-size: 9px;
+    letter-spacing: .42em;
+    text-transform: uppercase;
+    color: #77736c;
+}
+
+.mudra-hero-title {
+    margin: 0;
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+    font-size: clamp(72px, 13vw, 190px);
+    font-weight: 400;
+    line-height: .78;
+    letter-spacing: -.075em;
+    color: #181714;
+}
+
+.mudra-hero-subtitle {
+    margin: 28px auto 0;
+    max-width: 440px;
+    font-size: 11px;
+    line-height: 1.8;
+    letter-spacing: .08em;
+    color: #66625b;
+}
+
+/* =========================================================
+   HERO CTA
+   ========================================================= */
+
+.mudra-hero-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 27px;
+    padding: 14px 30px;
+    border: 1px solid #171613;
+    background: rgba(255,255,255,.55);
+    color: #171613;
+    font-size: 9px;
+    letter-spacing: .24em;
+    text-transform: uppercase;
+    text-decoration: none;
+    pointer-events: auto;
+    transition:
+        background .3s ease,
+        color .3s ease,
+        transform .3s ease;
+}
+
+.mudra-hero-cta:hover {
+    background: #171613;
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+/* =========================================================
+   LARGE IMAGE / PRODUCT PLACEHOLDER
+   ========================================================= */
+
+.mudra-product-stage {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+/*
+    This deliberately large empty frame shows the exact
+    approximate area where the final hero photography can go.
+*/
+
+.mudra-hero-placeholder {
+    width: min(470px, 55vw);
+    height: min(650px, 72vh);
+    border: 1px dashed rgba(30,29,26,.18);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.42),
+            rgba(255,255,255,.08)
+        );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8b877f;
+    text-align: center;
+}
+
+.mudra-hero-placeholder-inner {
+    padding: 30px;
+}
+
+.mudra-hero-placeholder-label {
+    font-size: 9px;
+    letter-spacing: .32em;
+    text-transform: uppercase;
+}
+
+.mudra-hero-placeholder-size {
+    margin-top: 12px;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 15px;
+    color: #77736c;
+}
+
+/* =========================================================
+   DECORATIVE SIDE TEXT
+   ========================================================= */
+
+.mudra-side-note {
+    position: absolute;
+    z-index: 10;
+    top: 50%;
+    font-size: 8px;
+    letter-spacing: .28em;
+    text-transform: uppercase;
+    color: #858178;
+    writing-mode: vertical-rl;
+}
+
+.mudra-side-note.left {
+    left: 24px;
+    transform: translateY(-50%) rotate(180deg);
+}
+
+.mudra-side-note.right {
+    right: 24px;
+    transform: translateY(-50%);
+}
+
+/* =========================================================
+   HERO BOTTOM LABEL
+   ========================================================= */
+
+.mudra-hero-bottom {
+    position: absolute;
+    z-index: 20;
+    left: 0;
+    right: 0;
+    bottom: 24px;
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+}
+
+.mudra-hero-bottom span {
+    font-size: 8px;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: #77736c;
+}
+
+/* =========================================================
+   INTRO
+   ========================================================= */
+
+.mudra-intro {
+    min-height: 570px;
+    padding: 120px 30px;
+    background: #181714;
+    color: #f3f0e9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.mudra-intro-inner {
+    width: min(780px, 90vw);
+}
+
+.mudra-intro-kicker {
+    margin-bottom: 28px;
+    font-size: 9px;
+    letter-spacing: .38em;
+    text-transform: uppercase;
+    color: #aaa59b;
+}
+
+.mudra-intro h2 {
+    margin: 0;
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+    font-size: clamp(48px, 7vw, 94px);
+    font-weight: 400;
+    line-height: .95;
+    letter-spacing: -.045em;
+}
+
+.mudra-intro p {
+    max-width: 520px;
+    margin: 34px auto 0;
+    color: #aaa59b;
+    font-size: 13px;
+    line-height: 1.9;
+}
+
+/* =========================================================
+   COLLECTION INTRO
+   ========================================================= */
+
+.mudra-collection {
+    padding: 120px 5vw;
+    background: #f4f2ed;
+}
+
+.mudra-section-heading {
+    max-width: 700px;
+    margin: 0 auto 80px;
+    text-align: center;
+}
+
+.mudra-section-kicker {
+    margin-bottom: 18px;
+    font-size: 9px;
+    letter-spacing: .35em;
+    text-transform: uppercase;
+    color: #817d75;
+}
+
+.mudra-section-heading h2 {
+    margin: 0;
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+    font-size: clamp(42px, 6vw, 72px);
+    font-weight: 400;
+    line-height: .98;
+    letter-spacing: -.04em;
+}
+
+.mudra-section-heading p {
+    max-width: 460px;
+    margin: 25px auto 0;
+    color: #77736c;
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+/* =========================================================
+   PRODUCT GRID
+   ========================================================= */
+
+.mudra-product-grid {
+    width: min(1250px, 100%);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+}
+
+.mudra-product-card {
+    position: relative;
+    min-width: 0;
+}
+
+.mudra-product-image {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    background: #ebe8e1;
+    border: 1px solid rgba(30,29,26,.10);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.mudra-product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 35px;
+}
+
+.mudra-product-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 25px;
+}
+
+.mudra-product-placeholder span {
+    font-size: 8px;
+    line-height: 1.8;
+    letter-spacing: .25em;
+    text-transform: uppercase;
+    color: #8a857d;
+}
+
+.mudra-product-meta {
+    padding: 18px 2px 0;
+}
+
+.mudra-product-category {
+    font-size: 8px;
+    letter-spacing: .24em;
+    text-transform: uppercase;
+    color: #88837a;
+}
+
+.mudra-product-name {
+    margin-top: 8px;
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+    font-size: 22px;
+    font-weight: 400;
+}
+
+.mudra-product-price {
+    margin-top: 6px;
+    font-size: 11px;
+    color: #68645d;
+}
+
+/* =========================================================
+   COLLECTION BUTTON
+   ========================================================= */
+
+.mudra-collection-action {
+    display: flex;
+    justify-content: center;
+    margin-top: 70px;
+}
+
+.mudra-outline-button {
+    display: inline-flex;
+    padding: 14px 30px;
+    border: 1px solid #171613;
+    color: #171613;
+    font-size: 9px;
+    letter-spacing: .24em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all .3s ease;
+}
+
+.mudra-outline-button:hover {
+    background: #171613;
+    color: #fff;
+}
+
+/* =========================================================
+   BRAND STATEMENT
+   ========================================================= */
+
+.mudra-statement {
+    min-height: 620px;
+    background: #dedbd3;
+    padding: 100px 5vw;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+}
+
+.mudra-statement-image {
+    width: 100%;
+    aspect-ratio: 1 / 1.08;
+    border: 1px dashed rgba(30,29,26,.20);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #7d786f;
+}
+
+.mudra-statement-image span {
+    font-size: 8px;
+    letter-spacing: .28em;
+    text-transform: uppercase;
+}
+
+.mudra-statement-copy {
+    max-width: 520px;
+}
+
+.mudra-statement-copy .mudra-section-kicker {
+    margin-bottom: 25px;
+}
+
+.mudra-statement-copy h2 {
+    margin: 0;
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+    font-size: clamp(45px, 6vw, 78px);
+    font-weight: 400;
+    line-height: .94;
+    letter-spacing: -.045em;
+}
+
+.mudra-statement-copy p {
+    margin-top: 30px;
+    color: #625e56;
+    font-size: 13px;
+    line-height: 1.9;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .mudra-hero {
+        min-height: 720px;
+    }
+
+    .mudra-hero-copy {
+        top: 47%;
+    }
+
+    .mudra-hero-title {
+        font-size: clamp(65px, 20vw, 130px);
+    }
+
+    .mudra-hero-placeholder {
+        width: 65vw;
+        height: 480px;
+    }
+
+    .mudra-side-note {
+        display: none;
+    }
+
+    .mudra-product-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .mudra-statement {
+        grid-template-columns: 1fr;
+        gap: 55px;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .mudra-hero {
+        min-height: 680px;
+    }
+
+    .mudra-hero-copy {
+        width: 92vw;
+    }
+
+    .mudra-kicker {
+        font-size: 8px;
+    }
+
+    .mudra-hero-title {
+        font-size: 23vw;
+    }
+
+    .mudra-hero-subtitle {
+        font-size: 10px;
+        max-width: 330px;
+    }
+
+    .mudra-hero-placeholder {
+        width: 72vw;
+        height: 420px;
+    }
+
+    .mudra-hero-bottom {
+        gap: 20px;
+        bottom: 18px;
+    }
+
+    .mudra-hero-bottom span {
+        font-size: 7px;
+    }
+
+    .mudra-intro {
+        min-height: 500px;
+        padding: 90px 25px;
+    }
+
+    .mudra-collection {
+        padding: 90px 20px;
+    }
+
+    .mudra-section-heading {
+        margin-bottom: 55px;
+    }
+
+    .mudra-product-grid {
+        grid-template-columns: 1fr;
+        gap: 55px;
+    }
+
+    .mudra-product-image {
+        aspect-ratio: 1 / 1.12;
+    }
+
+    .mudra-statement {
+        padding: 80px 20px;
+    }
+
+}
+
+/* =========================================================
+   ACCESSIBILITY / REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .mudra-hero-cta,
+    .mudra-outline-button {
+        transition: none;
+    }
+
+}
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="mudra-home">
+
+    <!-- =====================================================
+         HERO
+         ===================================================== -->
+
+    <section class="mudra-hero">
+
+        <div class="mudra-side-note left">
+            MUDRA Fragrance
+        </div>
+
+        <div class="mudra-side-note right">
+            Eau de Parfum
+        </div>
+
+        <!--
+            LARGE PLACEHOLDER
+
+            This is intentionally empty.
+            It shows the approximate footprint of the final
+            hero photography / product composition.
+        -->
+
+        <div class="mudra-product-stage">
+
+            <div class="mudra-hero-placeholder">
+
+                <div class="mudra-hero-placeholder-inner">
+
+                    <div class="mudra-hero-placeholder-label">
+                        Hero Image Placeholder
+                    </div>
+
+                    <div class="mudra-hero-placeholder-size">
+                        Product / Campaign Photography
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="mudra-hero-copy">
+
+            <div class="mudra-kicker">
+                MUDRA Fragrance
+            </div>
+
+            <h1 class="mudra-hero-title">
+                MUDRA
+            </h1>
+
+            <p class="mudra-hero-subtitle">
+                Fragrance created with intention,
+                atmosphere and character.
+            </p>
+
+            <a
+                href="{% url 'shop' %}"
+                class="mudra-hero-cta"
+            >
+                Explore Collection
+            </a>
+
+        </div>
+
+
+        <div class="mudra-hero-bottom">
+
+            <span>
+                New Collection
+            </span>
+
+            <span>
+                2026
+            </span>
+
+            <span>
+                India
+            </span>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         BRAND INTRO
+         ===================================================== -->
+
+    <section class="mudra-intro">
+
+        <div class="mudra-intro-inner">
+
+            <div class="mudra-intro-kicker">
+                The MUDRA Philosophy
+            </div>
+
+            <h2>
+                A world<br>
+                of fragrance.
+            </h2>
+
+            <p>
+                MUDRA explores fragrance through composition,
+                material, atmosphere and emotion.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         COLLECTION
+         ===================================================== -->
+
+    <section class="mudra-collection">
+
+        <div class="mudra-section-heading">
+
+            <div class="mudra-section-kicker">
+                The Collection
+            </div>
+
+            <h2>
+                Discover MUDRA.
+            </h2>
+
+            <p>
+                Explore the fragrances currently available
+                in the collection.
+            </p>
+
+        </div>
+
+
+        <div class="mudra-product-grid">
+
+            {% if featured_products %}
+
+                {% for product in featured_products %}
+
+                    <article class="mudra-product-card">
+
+                        <a
+                            href="{% url 'shop' %}"
+                            style="text-decoration:none;color:inherit;"
+                        >
+
+                            <div class="mudra-product-image">
+
+                                {% if product.image %}
+
+                                    <img
+                                        src="{{ product.image.url }}"
+                                        alt="{{ product.name }}"
+                                    >
+
+                                {% else %}
+
+                                    <div class="mudra-product-placeholder">
+
+                                        <span>
+                                            Product Image<br>
+                                            Placeholder
+                                        </span>
+
+                                    </div>
+
+                                {% endif %}
+
+                            </div>
+
+                        </a>
+
+
+                        <div class="mudra-product-meta">
+
+                            {% if product.category %}
+
+                                <div class="mudra-product-category">
+                                    {{ product.category.name }}
+                                </div>
+
+                            {% else %}
+
+                                <div class="mudra-product-category">
+                                    MUDRA Fragrance
+                                </div>
+
+                            {% endif %}
+
+                            <div class="mudra-product-name">
+                                {{ product.name }}
+                            </div>
+
+                            <div class="mudra-product-price">
+                                &#8377;{{ product.price }}
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                {% endfor %}
+
+            {% else %}
+
+                <!--
+                    DATABASE EMPTY STATE
+
+                    These are visual placeholders only.
+                    No products are created in the database.
+                -->
+
+                {% for item in "123" %}
+
+                    <article class="mudra-product-card">
+
+                        <div class="mudra-product-image">
+
+                            <div class="mudra-product-placeholder">
+
+                                <span>
+                                    Product Image<br>
+                                    Placeholder
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <div class="mudra-product-meta">
+
+                            <div class="mudra-product-category">
+                                MUDRA Fragrance
+                            </div>
+
+                            <div class="mudra-product-name">
+                                Fragrance Placeholder
+                            </div>
+
+                            <div class="mudra-product-price">
+                                Product Price
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                {% endfor %}
+
+            {% endif %}
+
+        </div>
+
+
+        <div class="mudra-collection-action">
+
+            <a
+                href="{% url 'shop' %}"
+                class="mudra-outline-button"
+            >
+                View All Fragrances
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         BRAND IMAGE / STORY
+         ===================================================== -->
+
+    <section class="mudra-statement">
+
+        <div class="mudra-statement-image">
+
+            <span>
+                Brand Photography Placeholder
+            </span>
+
+        </div>
+
+
+        <div class="mudra-statement-copy">
+
+            <div class="mudra-section-kicker">
+                MUDRA
+            </div>
+
+            <h2>
+                Fragrance<br>
+                as atmosphere.
+            </h2>
+
+            <p>
+                A visual and olfactory language built around
+                simplicity, character and presence.
+            </p>
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}
